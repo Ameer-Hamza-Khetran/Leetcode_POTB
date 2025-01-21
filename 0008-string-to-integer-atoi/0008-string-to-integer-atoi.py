@@ -1,31 +1,36 @@
 class Solution:
     def myAtoi(self, s: str) -> int:
-        s = s.strip()
-        if not s:
-            return 0
+        # Constants for 32-bit signed integer range
+        INT_MIN = -2**31
+        INT_MAX = 2**31 - 1
 
-        res = []
+        # Step 1: Ignore leading whitespaces manually
+        n = len(s)
         i = 0
-        sign = 1
-        if s[0] == '-':
-            sign = -1
-            i += 1
-        elif s[0] == '+':
+        while i < n and s[i] == ' ':
             i += 1
 
-        while i < len(s) and s[i].isnumeric():
-            res.append(s[i])
-            i += 1
-
-        if not res:
+        # Step 2: Check if the string is empty after skipping spaces
+        if i == n:
             return 0
 
-        num = int("".join(res)) * sign
+        # Step 3: Determine the sign
+        sign = 1  # Assume positive by default
+        if s[i] in ('-', '+'):
+            sign = -1 if s[i] == '-' else 1
+            i += 1  # Skip the sign character
 
-        int_min, int_max = -2**31, 2**31 - 1
-        if num < int_min:
-            return int_min
-        if num > int_max:
-            return int_max
-        
-        return num
+        # Step 4: Convert characters to integer
+        result = 0
+        while i < n and s[i].isdigit():
+            result = result * 10 + int(s[i])
+
+            # Step 5: Handle overflow
+            if sign * result < INT_MIN:
+                return INT_MIN
+            if sign * result > INT_MAX:
+                return INT_MAX
+
+            i += 1
+
+        return sign * result
