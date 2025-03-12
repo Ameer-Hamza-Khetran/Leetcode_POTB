@@ -17,13 +17,13 @@ class Solution:
         # Step 3: Determine the sign
         sign = 1  # Assume positive by default
         if s[i] in ('-', '+'):
-            sign = -1 if s[i] == '-' else 1
+            sign = -1 if s[i] == '-' else False
             i += 1  # Skip the sign character
 
         # Step 4: Convert characters to integer
         result = 0
-        while i < n and s[i].isdigit():
-            result = result * 10 + int(s[i])
+        while i < n and '0' <= s[i] <= '9':  # Manual digit check
+            result = result * 10 + (ord(s[i]) - ord('0'))  # Convert char to int using ASCII
 
             # Step 5: Handle overflow
             if sign * result < INT_MIN:
