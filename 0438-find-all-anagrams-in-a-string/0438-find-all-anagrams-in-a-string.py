@@ -1,51 +1,39 @@
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
         res = []
-        len_s = len(s)
-        len_p = len(p)
-        
-        if len_p > len_s:
-            return res
-        
-        # Build frequency map for p
         p_map = {}
-        for char in p:
-            if char in p_map:
-                p_map[char] += 1
+
+        # Step 1: Build frequency map for p
+        for ch in p:
+            if ch in p_map:
+                p_map[ch] += 1
             else:
-                p_map[char] = 1
-        
-        # initialize window map
-        s_map = {}
-        for i in range(len_p):
-            char = s[i]
-            if char in s_map:
-                s_map[char] += 1
-            else:
-                s_map[char] = 1
-        
-        # compare first window
-        if s_map == p_map:
-            res.append(0)
+                p_map[ch] = 1
 
-        # slide the window
-        for i in range(len_p, len_s):
-            left_char = s[i - len_p]
-            new_char = s[i]
+        i = 0  # window start
 
-            # remove left char from the window
-            s_map[left_char] -= 1
-            if s_map[left_char] == 0:
-                del s_map[left_char]
+        for j in range(len(s)):
+            right_char = s[j]
+            if right_char in p_map:
+                p_map[right_char] -= 1
 
-            # add new_char to window
-            if new_char in s_map:
-                s_map[new_char] += 1
-            else:
-                s_map[new_char] = 1
+            # Shrink window if size exceeds p
+            if j - i + 1 > len(p):
+                left_char = s[i]
+                if left_char in p_map:
+                    p_map[left_char] += 1
+                i += 1
 
-            # compare maps
-            if s_map == p_map:
-                res.append(i-len_p + 1)
-        
-        return res 
+            # Check if all values in p_map are zero when window is valid
+            if j - i + 1 == len(p):
+                all_zero = True
+                for key in p_map:
+                    if p_map[key] != 0:
+                        all_zero = False
+                        break
+                if all_zero:
+                    res.append(i)
+
+        return res
+
+
