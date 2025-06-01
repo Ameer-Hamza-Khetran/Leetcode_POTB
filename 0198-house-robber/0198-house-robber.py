@@ -1,11 +1,10 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        if not nums:
-            return 0
-        n = len(nums)
-        dp = [0] * (n + 2)  # Add 2 extra to avoid index out of bounds
+        rob_next, rob_next_plus_one = 0, 0  # dp[i+1], dp[i+2]
 
-        for i in range(n - 1, -1, -1):
-            dp[i] = max(nums[i] + dp[i + 2], dp[i + 1])
+        for i in range(len(nums) - 1, -1, -1):
+            current = max(nums[i] + rob_next_plus_one, rob_next)
+            rob_next_plus_one = rob_next
+            rob_next = current
 
-        return dp[0]
+        return rob_next
