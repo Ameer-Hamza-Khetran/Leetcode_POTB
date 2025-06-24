@@ -1,15 +1,10 @@
 class Solution:
     def uniqueOccurrences(self, arr: List[int]) -> bool:
-        freq_map = {}
+        count = [0] * 2001
         for num in arr:
-            if num in freq_map:
-                freq_map[num] += 1
-            else:
-                freq_map[num] = 1
-        
-        seen = set()
-        for freq in freq_map.values():
-            if freq in seen:
+            count[num + 1000] += 1
+        count.sort()
+        for i in range(len(count)):
+            if count[i] != 0 and count[i] == count[i-1]:
                 return False
-            seen.add(freq)
         return True
