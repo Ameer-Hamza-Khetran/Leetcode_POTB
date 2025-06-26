@@ -1,9 +1,12 @@
 class Solution:
     def checkIfPangram(self, sentence: str) -> bool:
-        seen = set()
+        map = {}
         for i in sentence:
-            seen.add(i)
-        if len(seen) == 26:
+            if i in map:
+                map[i] += 1
+            else:
+                map[i] = 1
+        if len(map) == 26:
             return True
         else:
             return False
