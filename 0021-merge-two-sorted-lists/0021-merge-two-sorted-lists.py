@@ -9,11 +9,10 @@ class Solution:
             return list2
         if list2 is None:
             return list1
-        result = ListNode(-1, None)
         if list1.val <= list2.val:
-            result.val = list1.val
+            result = list1
             result.next = self.mergeTwoLists(list1.next, list2)
-        else:
-            result.val = list2.val
+        else: 
+            result = list2
             result.next = self.mergeTwoLists(list1, list2.next)
         return result
